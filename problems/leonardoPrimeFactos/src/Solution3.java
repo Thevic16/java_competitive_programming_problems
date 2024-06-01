@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 class Result3 {
@@ -13,10 +16,10 @@ class Result3 {
      * The function is expected to return an INTEGER.
      * The function accepts LONG_INTEGER n as parameter.
      */
-    public static long gcd(long a, long b) {
-        while (b != 0) {
-            long t = b;
-            b = a % b;
+    public static BigInteger gcd(BigInteger a, BigInteger b) {
+        while (!Objects.equals(b, BigInteger.ZERO)) {
+            BigInteger t = b;
+            b = a.mod(b);
             a = t;
         }
         return a;
@@ -24,7 +27,7 @@ class Result3 {
 
     public static int primeCount(long n) {
         int count = 1;
-        long prod = 2;
+        BigInteger prod = BigInteger.valueOf(2);
 
 
         if (n < 2) {
@@ -32,11 +35,11 @@ class Result3 {
         }
 
 
-        for (long prim = 3; prod * prim <= n ; prim += 2) {
-            long resultGcd = gcd(prod, prim);
+        for (BigInteger prim = BigInteger.valueOf(3); prod.multiply(prim).compareTo(BigInteger.valueOf(n)) <= 0; prim = prim.add(BigInteger.valueOf(2))) {
+            BigInteger resultGcd = gcd(prod, prim);
 
-            if(resultGcd == 1){
-                prod *= prim;
+            if(resultGcd.compareTo(BigInteger.ONE) == 0){
+                prod = prod.multiply(prim);
                 count++;
             }
         }
